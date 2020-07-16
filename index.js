@@ -65,13 +65,13 @@ app.delete('/api/persons/:id', (req, res) => {
   res.status(204).end()
 })
 
-const generateId = () => {
+/* const generateId = () => {
   const maxId = persons.length > 0
     ? Math.max(...persons.map(p => p.id)) 
     : 0
 
   return maxId + 1
-}
+} */
 
 app.post('/api/persons', (req, res) => {
   const body = req.body
@@ -81,10 +81,6 @@ app.post('/api/persons', (req, res) => {
       error: 'name and/or number missing' 
     })
   }
-
-  const nameExists = () => persons.some(person => person.name === body.name)
-  console.log('nameExists', nameExists);
-  
 
   if (persons.some(person => person.name === body.name)) {
     return res.status(400).json({ 
