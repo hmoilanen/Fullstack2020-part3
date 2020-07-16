@@ -5,9 +5,13 @@
 // -start the application with nodemon: $ npm run dev
 
 const express = require('express')
+const morgan = require('morgan')
 const app = express()
 
+// Middleware
+// Note: middleware functions are called in the order that they're taken into use!
 app.use(express.json())
+app.use(morgan('tiny'))
 
 let persons = [
   {
@@ -101,5 +105,6 @@ app.post('/api/persons', (req, res) => {
 
 const PORT = 3001
 app.listen(PORT, () => {
+  //morgan('tiny')
   console.log(`Server running on port ${PORT}`)
 })
