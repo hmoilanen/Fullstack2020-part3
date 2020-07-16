@@ -50,15 +50,10 @@ app.get('/api/persons', (req, res) => {
 app.get('/api/persons/:id', (req, res) => {
   const id = Number(req.params.id)
   const person = persons.find(person => person.id === id)
-  console.log('id:', id);
-  console.log('person:', person);
-  console.log('typeof person:', typeof person);
   
   if (person) {
-    console.log('on persoona');
     res.json(person)
   } else {
-    console.log('eio persoonaa');
     res.status(400).end()
   }
 })
