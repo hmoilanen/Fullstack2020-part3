@@ -1,0 +1,4 @@
+// Usage: https://github.com/Huachao/vscode-restclient/blob/master/README.md#usage
+
+GET http://localhost:3001/api/persons HTTP/1.1
+Content-Type: application/json
