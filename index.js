@@ -85,9 +85,7 @@ app.post('/api/persons', (req, res) => {
   const person = {
     name: body.name,
     number: body.number,
-    id: generateId()
-    //important: body.important || false,
-    //date: new Date(),
+    id: Math.floor(Math.random() * 1000000)
   }
 
   persons = persons.concat(person)
