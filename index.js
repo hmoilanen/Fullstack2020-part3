@@ -76,9 +76,19 @@ const generateId = () => {
 app.post('/api/persons', (req, res) => {
   const body = req.body
 
-  if (!body.name && !body.number) {
-    return response.status(400).json({ 
+  if (!body.name || !body.number) {
+    return res.status(400).json({ 
       error: 'name and/or number missing' 
+    })
+  }
+
+  const nameExists = () => persons.some(person => person.name === body.name)
+  console.log('nameExists', nameExists);
+  
+
+  if (persons.some(person => person.name === body.name)) {
+    return res.status(400).json({ 
+      error: 'a contact with same name already exists' 
     })
   }
 
