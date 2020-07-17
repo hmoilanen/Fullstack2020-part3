@@ -111,6 +111,5 @@ app.post('/api/persons', (req, res) => {
 
 const PORT = 3001
 app.listen(PORT, () => {
-  //morgan('tiny')
   console.log(`Server running on port ${PORT}`)
 })

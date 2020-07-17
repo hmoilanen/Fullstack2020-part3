@@ -1,16 +1,19 @@
-// Part 3a - phonebook backend
+// Part 3b - phonebook backend
 
 // Notes:
 // -start the application: $ npm start
 // -start the application with nodemon: $ npm run dev
 
 const express = require('express')
+const cors = require('cors')
 const morgan = require('morgan')
 const app = express()
+
 
 // Middleware
 // Note: middleware functions are called in the order that they're taken into use!
 app.use(express.json())
+app.use(cors())
 
 morgan.token('posted', function (req, res) {
   if (req.method === 'POST') {
@@ -75,14 +78,6 @@ app.delete('/api/persons/:id', (req, res) => {
   res.status(204).end()
 })
 
-/* const generateId = () => {
-  const maxId = persons.length > 0
-    ? Math.max(...persons.map(p => p.id)) 
-    : 0
-
-  return maxId + 1
-} */
-
 app.post('/api/persons', (req, res) => {
   const body = req.body
 
@@ -109,8 +104,7 @@ app.post('/api/persons', (req, res) => {
   res.json(person)
 })
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
-  //morgan('tiny')
   console.log(`Server running on port ${PORT}`)
 })
