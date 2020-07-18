@@ -1,4 +1,4 @@
-// Part 3b - phonebook backend
+// Part 3c - command-line database
 
 // Notes:
 // -start the application: $ npm start
