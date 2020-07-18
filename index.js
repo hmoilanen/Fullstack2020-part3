@@ -13,6 +13,7 @@ const app = express()
 // Middleware
 // Note: middleware functions are called in the order that they're taken into use!
 app.use(express.json())
+app.use(express.static('build'))
 app.use(cors())
 
 morgan.token('posted', function (req, res) {
