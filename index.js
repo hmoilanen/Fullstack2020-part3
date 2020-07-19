@@ -1,39 +1,21 @@
-// Part 3c - command-line database
+// Part 3c - phonebook database
 
 // Notes:
 // -start the application: $ npm start
 // -start the application with nodemon: $ npm run dev
 
+require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
 const app = express()
 const mongoose = require('mongoose')
+const Contact = require('./models/contact')
 
 const password = 'td4AUzQAckaeswPb33fefoiTfw9RZ7' //MOVE ELSEWHERE!
 const dbName = 'phonebook-app'
 const url = `mongodb+srv://Fullstack2020:${password}@cluster0.jfyg6.mongodb.net/${dbName}?retryWrites=true&w=majority`
 
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-
-const contactSchema = new mongoose.Schema({
-  name: String,
-  number: String,
-  date: Date,
-  important: Boolean
-})
-
-contactSchema.set('toJSON', {
-  transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString()
-    delete returnedObject._id
-    delete returnedObject.__v
-  }
-})
-
-const Contact = mongoose.model('Contact', contactSchema)
-
-// Middleware
 // Note: middleware functions are called in the order that they're taken into use!
 app.use(express.static('build'))
 app.use(express.json())
@@ -113,24 +95,25 @@ app.post('/api/persons', (req, res) => {
     })
   }
 
-  if (persons.some(person => person.name === body.name)) {
-    return res.status(400).json({ 
-      error: 'a contact with same name already exists' 
-    })
-  }
-
-  const person = {
+  const contact = new Contact({
     name: body.name,
     number: body.number,
-    id: Math.floor(Math.random() * 1000000)
-  }
+    date: new Date(),
+    important: false
+  })
 
-  persons = persons.concat(person)
-
-  res.json(person)
+  contact.save()
+    .then(savedContact => {
+      console.log(`Added name: ${body.name} and number: ${body.number} to ${dbName}`);
+      //persons = persons.concat(savedContact)
+      res.json(savedContact)
+    })
+    .catch(error => {
+      console.log(error);
+    })
 })
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
