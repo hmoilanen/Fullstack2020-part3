@@ -8,35 +8,12 @@ const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
 const app = express()
-const mongoose = require('mongoose')
 
-const password = 'td4AUzQAckaeswPb33fefoiTfw9RZ7' //MOVE ELSEWHERE!
-const dbName = 'phonebook-app'
-const url = `mongodb+srv://Fullstack2020:${password}@cluster0.jfyg6.mongodb.net/${dbName}?retryWrites=true&w=majority`
-
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-
-const contactSchema = new mongoose.Schema({
-  name: String,
-  number: String,
-  date: Date,
-  important: Boolean
-})
-
-contactSchema.set('toJSON', {
-  transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString()
-    delete returnedObject._id
-    delete returnedObject.__v
-  }
-})
-
-const Contact = mongoose.model('Contact', contactSchema)
 
 // Middleware
 // Note: middleware functions are called in the order that they're taken into use!
-app.use(express.static('build'))
 app.use(express.json())
+app.use(express.static('build'))
 app.use(cors())
 
 morgan.token('posted', function (req, res) {
@@ -81,9 +58,7 @@ app.get('/info', (req, res) => {
 })
 
 app.get('/api/persons', (req, res) => {
-  Contact.find({}).then(contacts => {
-    res.json(contacts)
-  })
+  res.json(persons)
 })
 
 app.get('/api/persons/:id', (req, res) => {

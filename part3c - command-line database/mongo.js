@@ -37,9 +37,9 @@ if (!password) {
   })
 } else { // If only password is provided
   console.log('Phonebook:');
-  Contact.find({}).then(contacts => {
-    contacts.forEach(contact => {
-      console.log(contact.name, contact.number)
+  Contact.find({}).then(result => {
+    result.forEach(note => {
+      console.log(note.name, note.number)
     })
     mongoose.connection.close()
   })
