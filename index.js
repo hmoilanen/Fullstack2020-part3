@@ -79,12 +79,21 @@ app.get('/api/persons/:id', (req, res) => {
   }
 })
 
-app.delete('/api/persons/:id', (req, res) => {
-  const id = Number(req.params.id)
-  persons = persons.filter(person => person.id !== id)
+app.delete('/api/persons/:id', (req, res, next) => {
+  console.log(req);
+  console.log(req.params);
+  console.log(req.params.id);
 
-  res.status(204).end()
+  Contact.findByIdAndRemove(req.params.id)
+    .then(result => {
+      console.log('poistuuko');
+      res.status(204).end()
+    })
+    .catch(error => next(error))
 })
+
+
+
 
 app.post('/api/persons', (req, res) => {
   const body = req.body
