@@ -13,6 +13,7 @@ const Contact = require('./models/contact')
 
 const dbName = 'phonebook-app'
 const url = process.env.MONGODB_URI
+console.log('process.env.PORT', process.env.PORT);
 
 // Note: middleware functions are called in the order that they're taken into use!
 app.use(express.static('build'))
