@@ -90,7 +90,9 @@ app.post('/api/persons', (req, res, next) => {
       console.log(`Added name: ${body.name} and number: ${body.number} to ${dbName}`);
       res.json(savedContact)
     })
-    .catch(error => next(error))
+    .catch(error => {
+      next(error)
+    })
 })
 
 app.put('/api/persons/:id', (req, res, next) => {
@@ -107,12 +109,12 @@ app.put('/api/persons/:id', (req, res, next) => {
 })
 
 const errorHandler = (error, req, res, next) => {
-  console.error(error.message)
-  console.log('error.name', error.name);
+  //console.error(error.message)
+  //console.log('error.name', error.name);
   if (error.name === 'CastError') {
     return res.status(400).send({ error: 'malformatted id' })
   } else if (error.name === 'ValidationError') {
-    return res.status(403).send({ error: 'expected `name` to be unique' })
+    return res.status(403).send({ error: error.message })
   }
 
   next(error)
