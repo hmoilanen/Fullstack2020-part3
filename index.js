@@ -9,12 +9,10 @@ const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
 const app = express()
-const mongoose = require('mongoose')
 const Contact = require('./models/contact')
 
-const password = 'td4AUzQAckaeswPb33fefoiTfw9RZ7' //MOVE ELSEWHERE!
 const dbName = 'phonebook-app'
-const url = `mongodb+srv://Fullstack2020:${password}@cluster0.jfyg6.mongodb.net/${dbName}?retryWrites=true&w=majority`
+const url = process.env.MONGODB_URI
 
 // Note: middleware functions are called in the order that they're taken into use!
 app.use(express.static('build'))
@@ -62,7 +60,7 @@ app.get('/info', (req, res) => {
   `)
 })
 
-app.get('/api/persons', (req, res) => {
+app.get('/api/persons', (req, res, next) => {
   Contact.find({})
     .then(contacts => {
       res.json(contacts)
@@ -89,11 +87,9 @@ app.delete('/api/persons/:id', (req, res, next) => {
     .catch(error => next(error))
 })
 
-
-
-
-app.post('/api/persons', (req, res) => {
+app.post('/api/persons', (req, res, next) => {
   const body = req.body
+  console.log('body:', body);
 
   if (!body.name || !body.number) {
     return res.status(400).json({ 
@@ -103,16 +99,28 @@ app.post('/api/persons', (req, res) => {
 
   const contact = new Contact({
     name: body.name,
-    number: body.number,
+    number: body.number,
     date: new Date(),
-    important: false
+    important: false,
   })
 
   contact.save()
     .then(savedContact => {
       console.log(`Added name: ${body.name} and number: ${body.number} to ${dbName}`);
-      //persons = persons.concat(savedContact)
       res.json(savedContact)
+    })
+    .catch(error => next(error))
+})
+
+app.put('/api/persons/:id', (req, res, next) => {
+  Contact.find({ _id: req.params.id })
+    .then(results => {
+      results[0].number = req.body.number
+      results[0].save()
+        .then(updatedResult => {
+          res.json(updatedResult)
+        })
+        .catch(error => next(error))
     })
     .catch(error => next(error))
 })
