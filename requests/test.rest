@@ -19,5 +19,5 @@ Content-Type: application/json
 
 {
   "name": "Joku Nimi3",
-  "number": "420-000"
+  "number": "420-000000"
 }

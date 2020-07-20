@@ -1,4 +1,4 @@
-// Part 3c - phonebook database
+// Part 3c - Deploying the database backend to production
 
 // Notes:
 // -start the application: $ npm start
