@@ -53,7 +53,6 @@ app.get('/api/persons/:id', (req, res, next) => {
   Contact.find({ _id: req.params.id })
     .then(results => {
       if (results[0]) {
-        console.log('on resultseja', results[0]);
         res.json(results[0])
       } else {
         res.status(400).end()
@@ -72,7 +71,6 @@ app.delete('/api/persons/:id', (req, res, next) => {
 
 app.post('/api/persons', (req, res, next) => {
   const body = req.body
-  console.log('body:', body);
 
   if (!body.name || !body.number) {
     return res.status(400).json({ 
@@ -110,10 +108,12 @@ app.put('/api/persons/:id', (req, res, next) => {
 
 const errorHandler = (error, req, res, next) => {
   console.error(error.message)
-
+  console.log('error.name', error.name);
   if (error.name === 'CastError') {
     return res.status(400).send({ error: 'malformatted id' })
-  } 
+  } else if (error.name === 'ValidationError') {
+    return res.status(403).send({ error: 'expected `name` to be unique' })
+  }
 
   next(error)
 }
