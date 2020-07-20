@@ -90,9 +90,7 @@ app.post('/api/persons', (req, res, next) => {
       console.log(`Added name: ${body.name} and number: ${body.number} to ${dbName}`);
       res.json(savedContact)
     })
-    .catch(error => {
-      next(error)
-    })
+    .catch(error => next(error))
 })
 
 app.put('/api/persons/:id', (req, res, next) => {
@@ -122,7 +120,7 @@ const errorHandler = (error, req, res, next) => {
 
 app.use(errorHandler)
 
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })

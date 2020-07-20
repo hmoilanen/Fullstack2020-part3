@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 
 const url = process.env.MONGODB_URI
+console.log('typeof url:', typeof url);
 
 console.log('connecting to', url)
 
